@@ -8,7 +8,8 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  functionAppName: 'myAzureFunctionApp'  # Replace with your actual Function App name
+  functionAppName: 'dwarkesh-function-lab4'
+  azureSubscription: 'azureSubscription'
 
 stages:
 - stage: Build
@@ -20,9 +21,9 @@ stages:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
-        version: '6.x'
+        version: '8.x'
         installationPath: $(Agent.ToolsDirectory)/dotnet
-      displayName: 'Install .NET 6 SDK'
+      displayName: 'Install .NET 8 SDK'
     
     - script: |
         dotnet restore
@@ -62,9 +63,9 @@ stages:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
-        version: '6.x'
+        version: '8.x'
         installationPath: $(Agent.ToolsDirectory)/dotnet
-      displayName: 'Install .NET 6 SDK'
+      displayName: 'Install .NET 8 SDK'
     
     - script: |
         dotnet restore
@@ -97,7 +98,7 @@ stages:
     
     - task: AzureFunctionApp@1
       inputs:
-        azureSubscription: '$(azureSubscription)'  # Replace with your Azure service connection name
+        azureSubscription: '$(azureSubscription)'
         appName: '$(functionAppName)'
         package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
         appSettings: '-FUNCTIONS_WORKER_RUNTIME dotnet-isolated'
